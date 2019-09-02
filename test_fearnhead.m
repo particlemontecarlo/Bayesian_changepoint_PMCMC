@@ -42,3 +42,10 @@ figure(4)
 histogram(tau_collect(tau_collect>0),0:T)
 
 
+%% is it possible to compare likelihood estimates for the two methods???
+
+
+
+
+
+
