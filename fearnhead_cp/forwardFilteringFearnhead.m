@@ -1,4 +1,4 @@
-function [SS_all,log_W_all] = forwardFilteringFearnhead(params,T)
+function [SS_all,log_W_all,log_W_bar_all] = forwardFilteringFearnhead(params,T)
 %%% performs forward filtering recursively. Should return the weights of
 %%% the filtering distribution and the support 
 SS_nm1 = [0];
@@ -8,6 +8,8 @@ SS_all = zeros(T,T);
 SS_all(1,1) = SS_nm1;
 log_W_all = -Inf*ones(T,T);
 log_W_all(1,1) = log_W_nm1;
+log_W_bar_all = -Inf*ones(T,T);
+log_W_bar_all(1,1) = log_W_nm1;
 for n=2:T
     [SS_updated,log_Wbar_updated] = filteringRecursion(n,SS_nm1,log_W_nm1,params);
     log_W_nm1 = log_Wbar_updated - max(log_Wbar_updated)- ...
@@ -15,6 +17,7 @@ for n=2:T
     SS_nm1 = SS_updated;
     SS_all(n,1:n) = SS_updated;
     log_W_all(n,1:n) = log_W_nm1;
+    log_W_bar_all(n,1:n) = log_Wbar_updated;
 end
 
 end

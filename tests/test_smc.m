@@ -38,7 +38,7 @@ b_prior = 1;
 
 tau_collect = [];
 pGeo_collect = zeros(1,R);
-[SS_all,log_W_all] = changepoint_SMC(N,params);
+[SS_all,log_W_all,~] = changepoint_SMC(N,params);
 
 for r=1:R
     disp(r)
@@ -62,7 +62,7 @@ b_prior = 1;
 
 tau_collect = [];
 pGeo_collect = zeros(1,R);
-[SS_all,log_W_all] = changepoint_SMC(N,params);
+[SS_all,log_W_all,~] = changepoint_SMC(N,params);
 
 for r=1:R
     disp(r)

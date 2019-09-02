@@ -25,7 +25,7 @@ plot(obs_arr)
 % set parameters
 params.pGeo = 0.02;
 params.Y = obs_arr;
-params.sigma02 = 10;
+params.sigma02 = 20;
 params.sigma2 = s2;
 [~,T] = size(params.Y);
 
@@ -33,8 +33,8 @@ params.sigma2 = s2;
 N = T;
 
 % run forward filtering
-[SS_all_Fearnhead,log_W_all_Fearnhead] = forwardFilteringFearnhead(params,T);
-[SS_all,log_W_all] = changepoint_SMC(N,params);
+[SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
+[SS_all,log_W_all,~] = changepoint_SMC(N,params);
 
 % test support is the same
 assert(all(all(SS_all_Fearnhead==SS_all)))
@@ -59,8 +59,8 @@ end
 N = T/2;
 
 % run forward filtering
-[SS_all_Fearnhead,log_W_all_Fearnhead] = forwardFilteringFearnhead(params,T);
-[SS_all,log_W_all] = changepoint_SMC(N,params);
+[SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
+[SS_all,log_W_all,~] = changepoint_SMC(N,params);
 
 
 M = 1e3;
@@ -77,9 +77,32 @@ end
 figure(2)
 subplot(2,1,1)
 histogram(tau_collect_Fearnhead(tau_collect_Fearnhead>0),0:T)
+title('Posterior distribution of changepoints for Fearnhead')
 
 subplot(2,1,2)
 histogram(tau_collect_SMC(tau_collect_SMC>0),0:T)
+title('Posterior distribution of changepoints for SMC')
+
+
+%% possible to compare likelihood estimates for the two methods
+[SS_all_Fearnhead,log_W_all_Fearnhead,log_W_bar_all] = forwardFilteringFearnhead(params,T);
+[like_est_exact] = get_likelihood_est(log_W_bar_all);
+
+
+% get likelihood estimates
+M = 5e2;
+ll_ests = zeros(1,M);
+for m=1:M
+    [SS_all,log_W_all,log_W_bar_all] = changepoint_SMC(N,params);
+    [like_est] = get_likelihood_est(log_W_bar_all);
+    ll_ests(m) = like_est;
+end
+
+
+figure(3)
+histogram((ll_ests),50)
+line([like_est_exact,like_est_exact],ylim)
+ 
 
 
 

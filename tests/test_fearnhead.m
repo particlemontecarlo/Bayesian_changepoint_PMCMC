@@ -29,7 +29,7 @@ params.sigma2 = s2;
 [~,T] = size(params.Y);
 
 % run forward filtering
-[SS_all,log_W_all] = forwardFilteringFearnhead(params,T);
+[SS_all,log_W_all,~] = forwardFilteringFearnhead(params,T);
 
 M = 1e3;
 tau_collect = [];
@@ -40,9 +40,6 @@ end
 
 figure(4)
 histogram(tau_collect(tau_collect>0),0:T)
-
-
-%% is it possible to compare likelihood estimates for the two methods???
 
 
 
