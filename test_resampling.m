@@ -6,7 +6,7 @@ rng(1)
 % should have
 % 1. random support
 % 2. weights of particlesrng(1)
-addpath(genpath('smc_algorithm'));
+addpath(genpath('smc_cp'));
 addpath(genpath('tests'));
 
 

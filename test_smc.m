@@ -1,7 +1,7 @@
 %% test algorithm with simple changepoint problem - varying the means
 clear
 rng(1)
-addpath(genpath('smc_algorithm'));
+addpath(genpath('smc_cp'));
 addpath(genpath('fearnhead_cp'));
 addpath(genpath('tests'));
 

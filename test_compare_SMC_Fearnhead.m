@@ -2,7 +2,7 @@
 % compare between Fearnhead and special case of particle filter
 clear
 rng(1)
-addpath(genpath('smc_algorithm'));
+addpath(genpath('smc_cp'));
 addpath(genpath('fearnhead_cp'));
 addpath(genpath('tests'));
 
