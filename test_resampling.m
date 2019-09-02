@@ -16,9 +16,7 @@ addpath(genpath('tests'));
 % one test in a simple case and one test in a random case
 N = 1;
 W = [0.25,0.75]; % solution should be 2
-%W = W/(W(end))*N;
 logW = log(W);
-%assert(Ntest==N)
 [Cdev,logCdev] = solveC(logW);
 Ntest = sum(min(1,W*Cdev));
 assert(abs(Ntest-N)<=1e-6)
@@ -73,7 +71,7 @@ S_nm1(unsafe_mask) = O_nm1;
 
 %% test forward filtering
 SS_nm1 = [0,1,4,5];
-W_nm1 = [0.1,0.1,0.4,0.4];
+log_W_nm1 = log([0.1,0.1,0.4,0.4]);
 n = 7;
 N = 3;
 params.pGeo = 0.1;
@@ -82,27 +80,17 @@ params.sigma02 = 1;
 params.sigma2 = 1;
 
 
-[SS_updated,Wbar_updated] = forwardFiltering(n,N,SS_nm1,W_nm1,params)
+[SS_updated,Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params)
 
 %%
 SS_nm1 = [0];
-W_nm1 = [1];
+log_W_nm1 = log([1]);
 n = 2;
 N = 3;
 params.pGeo = 0.1;
 params.Y = randn(1,n);
 params.sigma02 = 1;
 params.sigma2 = 1;
-
-
-[SS_updated,Wbar_updated] = forwardFiltering(n,N,SS_nm1,W_nm1,params)
-
-
-
-%%
-% cases 
-%   i) n<N 
-%   ii) n>N-1
-%logWnew = conditionalFiltering(logW,Sn,Suppn,N,n,tau_star);
+[SS_updated,Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params)
 
 
