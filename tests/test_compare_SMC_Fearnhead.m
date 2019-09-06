@@ -56,7 +56,7 @@ end
 
 
 %% compare SMC and Fearnhead with N<T
-N = T/2;
+N = 50;
 
 % run forward filtering
 [SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
@@ -81,7 +81,7 @@ title('Posterior distribution of changepoints for Fearnhead')
 
 subplot(2,1,2)
 histogram(tau_collect_SMC(tau_collect_SMC>0),0:T)
-title('Posterior distribution of changepoints for SMC')
+title(sprintf('Posterior distribution of changepoints for SMC, N=%i',N))
 
 
 %% possible to compare likelihood estimates for the two methods
