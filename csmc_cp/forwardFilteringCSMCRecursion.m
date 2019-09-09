@@ -22,6 +22,8 @@ function [SS_updated,log_Wbar_updated] = forwardFilteringCSMCRecursion(n,N,tau_s
 assert(abs(sum(exp(log_W_nm1))-1)<1e-8)
 
 tau_kappa = tau_star(find(tau_star<n-1,1,'last'));
+% make sure the conditioning particle is in the support somewhere
+assert(sum(tau_kappa==SS_nm1)==1)
 
 if n<=(N+1)
     % no need to resample for small values of n
@@ -37,11 +39,13 @@ else
     unsafe_mask = log_W_nm1+logCnm1<=0;
     I_nm1 = SS_nm1(unsafe_mask);
     
+    % if it is unsafe use the conditional resampling, otherwise proceed as
+    % normal
     if any(tau_kappa==I_nm1)
         L_nm1 = card_SS-sum(unsafe_mask);
         W_for_I_nm1 = exp(log_W_nm1(unsafe_mask));
         assert(sum(unsafe_mask)>0)
-        [ O_nm1 ] = stratifiedResampling( I_nm1,W_for_I_nm1,N,L_nm1 );
+        [ O_nm1 ] = conditionalStratifiedResampling( I_nm1,W_for_I_nm1,N,L_nm1 );
     else
         L_nm1 = card_SS-sum(unsafe_mask);
         W_for_I_nm1 = exp(log_W_nm1(unsafe_mask));

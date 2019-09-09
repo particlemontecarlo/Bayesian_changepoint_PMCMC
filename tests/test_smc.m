@@ -38,7 +38,7 @@ b_prior = 1;
 
 tau_collect = [];
 pGeo_collect = zeros(1,R);
-[SS_all,log_W_all,~] = changepoint_SMC(N,params);
+[SS_all,log_W_all,~] = forwardFilteringSMC(N,params);
 
 for r=1:R
     disp(r)
@@ -56,21 +56,19 @@ histogram(tau_collect(tau_collect>0),0:T)
 %% run with particle number less than the number of observations
 N = 10;
 
-R = 1000;
+R = 100;
 a_prior = 1;
 b_prior = 1;
 
 tau_collect = [];
 pGeo_collect = zeros(1,R);
-[SS_all,log_W_all,~] = changepoint_SMC(N,params);
+[SS_all,log_W_all,~] = forwardFilteringSMC(N,params);
 
 for r=1:R
     disp(r)
     [ tau ] = bwdsSampling(params,SS_all,log_W_all);
     tau_collect = [tau_collect tau];
-    %n_success = length(tau)-1;
-    %params.pGeo = betarnd(a_prior + n_success,b_prior + T - n_success);
-    %pGeo_collect(r) = params.pGeo;
+
 end
 
 figure(5)

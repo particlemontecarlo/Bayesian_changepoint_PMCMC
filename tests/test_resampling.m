@@ -80,7 +80,7 @@ params.sigma02 = 1;
 params.sigma2 = 1;
 
 
-[SS_updated,Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params)
+[SS_updated,Wbar_updated] = forwardFilteringSMCRecursion(n,N,SS_nm1,log_W_nm1,params)
 
 %%
 SS_nm1 = [0];
@@ -91,6 +91,6 @@ params.pGeo = 0.1;
 params.Y = randn(1,n);
 params.sigma02 = 1;
 params.sigma2 = 1;
-[SS_updated,Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params)
+[SS_updated,Wbar_updated] = forwardFilteringSMCRecursion(n,N,SS_nm1,log_W_nm1,params)
 
 

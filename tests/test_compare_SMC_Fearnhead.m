@@ -36,7 +36,7 @@ N = T;
 
 % run forward filtering
 [SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
-[SS_all,log_W_all,~] = changepoint_SMC(N,params);
+[SS_all,log_W_all,~] = forwardFilteringSMC(N,params);
 
 % test support is the same
 assert(all(all(SS_all_Fearnhead==SS_all)))
@@ -62,7 +62,7 @@ N = 50;
 
 % run forward filtering
 [SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
-[SS_all,log_W_all,~] = changepoint_SMC(N,params);
+[SS_all,log_W_all,~] = forwardFilteringSMC(N,params);
 
 
 M = 1e3;
@@ -95,7 +95,7 @@ title(sprintf('Posterior distribution of changepoints for SMC, N=%i',N))
 M = 5e2;
 ll_ests = zeros(1,M);
 for m=1:M
-    [SS_all,log_W_all,log_W_bar_all] = changepoint_SMC(N,params);
+    [SS_all,log_W_all,log_W_bar_all] = forwardFilteringSMC(N,params);
     [like_est] = get_likelihood_est(log_W_bar_all);
     ll_ests(m) = like_est;
 end

@@ -11,11 +11,9 @@ assert(all(size(I_nm1)==size(W_nm1)));
 
 % check that the total number of particlces is correct
 [~,n_not_safe]= size(I_nm1);
-try
-    assert((n_not_safe+L_nm1)<=(N+1)) 
-catch
-    disp('debug')
-end
+
+assert((n_not_safe+L_nm1)<=(N+1)) 
+
 
 % normalise weights
 Wbar_nm1 = W_nm1/sum(W_nm1);
@@ -30,11 +28,8 @@ U_arr = U1 +  (0:(N-L_nm1-1))/(N-L_nm1);
 % set off spring to 0 or 1
 O_nm1 = histcounts(U_arr,Q_nm1);
 
-try
-    assert(all(O_nm1==0|O_nm1==1))
-catch
-    disp('debug')
-end
+assert(all(O_nm1==0|O_nm1==1))
+
 end
 
 
