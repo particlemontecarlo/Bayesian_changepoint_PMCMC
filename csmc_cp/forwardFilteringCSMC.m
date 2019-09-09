@@ -1,4 +1,4 @@
-function [SS_all,log_W_all,log_W_bar_all] = forwardFilteringCSMC(N,params)
+function [SS_all,log_W_all,log_W_bar_all] = forwardFilteringCSMC(N,tau_star,params)
 %%% performs Fearnhead (2007) SMC to obtain filtering approximations for
 %%% changepoints
 %
@@ -18,7 +18,9 @@ log_W_bar_all(1,1) = log_W_nm1;
 
 % iterate through time, recording random support and weights
 for n=2:T
-    [SS_updated,log_Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params);
+    [SS_updated,log_Wbar_updated] = forwardFilteringCSMCRecursion(n,N,tau_star,...
+        SS_nm1,log_W_nm1,params);
+    
     log_W_nm1 = log_Wbar_updated - max(log_Wbar_updated)- ...
             log(sum(exp(log_Wbar_updated-max(log_Wbar_updated))));
     SS_nm1 = SS_updated;

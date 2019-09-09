@@ -18,7 +18,7 @@ log_W_bar_all(1,1) = log_W_nm1;
 
 % iterate through time, recording random support and weights
 for n=2:T
-    [SS_updated,log_Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params);
+    [SS_updated,log_Wbar_updated] = forwardFilteringSMCRecursion(n,N,SS_nm1,log_W_nm1,params);
     log_W_nm1 = log_Wbar_updated - max(log_Wbar_updated)- ...
             log(sum(exp(log_Wbar_updated-max(log_Wbar_updated))));
     SS_nm1 = SS_updated;
