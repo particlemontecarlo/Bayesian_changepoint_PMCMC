@@ -1,4 +1,4 @@
-function [SS_all,log_W_all,log_W_bar_all] = changepoint_SMC(N,params)
+function [SS_all,log_W_all,log_W_bar_all] = forwardFilteringSMC(N,params)
 %%% performs Fearnhead (2007) SMC to obtain filtering approximations for
 %%% changepoints
 %

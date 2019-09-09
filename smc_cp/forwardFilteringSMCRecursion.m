@@ -1,4 +1,4 @@
-function [SS_updated,log_Wbar_updated] = forwardFiltering(n,N,SS_nm1,log_W_nm1,params)
+function [SS_updated,log_Wbar_updated] = forwardFilteringSMCRecursion(n,N,SS_nm1,log_W_nm1,params)
 %%%% Forward filtering for changepoints
 
 % % % description of variables
