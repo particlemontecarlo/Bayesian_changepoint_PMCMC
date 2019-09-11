@@ -1,7 +1,7 @@
 clear
 rng(1)
 addpath(genpath('csmc_cp'));
-addpath(genpath('tests'));
+addpath(genpath('smc_cp'));
 addpath(genpath('fearnhead_cp'));
 addpath(genpath('tests'));
 
