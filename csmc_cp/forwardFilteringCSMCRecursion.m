@@ -45,7 +45,10 @@ else
         L_nm1 = card_SS-sum(unsafe_mask);
         W_for_I_nm1 = exp(log_W_nm1(unsafe_mask));
         assert(sum(unsafe_mask)>0)
-        [ O_nm1 ] = conditionalStratifiedResampling( I_nm1,W_for_I_nm1,N,L_nm1 );
+        [ O_nm1 ] = conditionalStratifiedResampling( tau_kappa,I_nm1,W_for_I_nm1,N,L_nm1 );
+        
+        % assert that tau_kappa is resampled
+        assert(sum(O_nm1&(tau_kappa==I_nm1))==1)
     else
         L_nm1 = card_SS-sum(unsafe_mask);
         W_for_I_nm1 = exp(log_W_nm1(unsafe_mask));
