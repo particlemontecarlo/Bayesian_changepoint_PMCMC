@@ -39,6 +39,7 @@ pGeo_collect = zeros(1,M);
 a_prior = 1;
 b_prior = 1;
 for m=1:M
+    disp(m)
     [SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
     [ tau ] = bwdsSampling(params,SS_all_Fearnhead,log_W_all_Fearnhead);
     
