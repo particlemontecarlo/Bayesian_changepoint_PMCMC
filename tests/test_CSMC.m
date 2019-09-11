@@ -7,42 +7,9 @@ addpath(genpath('tests'));
 
 
 
-%% test conditional stratified resampling
-% come up with realistic test scenario
-% set up weights and particles
-N = 200;
-SS_nm1 = 1:N+1;
-[~,card_SS] = size(SS_nm1);
-W_nm1 = abs(randn(1,N+1));
-W_nm1 = W_nm1/sum(W_nm1);
-logW = log(W_nm1);
-[C,logC] = solveC(logW);
-
-% get the unsafe particles
-unsafe_mask = logW+logC<=0;
-I_nm1 = SS_nm1(unsafe_mask);
-
-% make sure tau is in unsafe set
-tau_kappa = I_nm1(1);
-
-L_nm1 = card_SS-sum(unsafe_mask);
-W_for_I_nm1 = W_nm1(unsafe_mask);
-
-% resample, making sure tau kappa is preserved
-[ O_nm1 ] = conditionalStratifiedResampling( tau_kappa,I_nm1,W_for_I_nm1,N,L_nm1 );
-
-assert(sum(O_nm1&(tau_kappa==I_nm1))==1)
-disp('Passed test of tau persisting after resampling')
-S_nm1 = zeros(1,N);
-S_nm1(~unsafe_mask) = 1;
-S_nm1(unsafe_mask) = O_nm1;
-
-
-
 %% test CSMC
 
 T = 200;
-N = 50;
 tau_star = [0,50,100,150];
 
 s2 = 1;
@@ -64,9 +31,44 @@ params.sigma02 = 20;
 params.sigma2 = s2;
 [~,T] = size(params.Y);
 tau0 = [0:10:(T-1)];
-
 tau = tau0;
-M = 1e2;
+
+%% run test for large number of particles comparing with exact algorithm
+N = T;
+
+[SS_all,log_W_all,log_W_bar_all] = forwardFilteringCSMC(N,tau,params);
+[SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
+
+% test support is the same
+assert(all(all(SS_all_Fearnhead==SS_all)))
+
+% test that the differences in recursions are the same up to machine
+% precision
+diff_array = zeros(T,T);
+log_W_all_1 = log_W_all;
+log_W_all_2 = log_W_all_Fearnhead;
+log_W_all_1(log_W_all_1==-Inf) = 0;
+log_W_all_2(log_W_all_2==-Inf) = 0;
+diff_measure = abs(log_W_all_1-log_W_all_2)<1e-8;
+if all(all(diff_measure))
+    disp('Pass test comparing filtering recursions for large number of particles')
+else
+    error('Difference in SMC and Fearnhead for large number particles')
+end
+
+
+%% run test for small number of particles using iterated conditional SMC
+
+N = T/10;
+M = 1e3;
+[SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);
+tau_collect_Fearnhead = [];
+for m=1:M
+    [ tau_Fearnhead ] = bwdsSampling(params,SS_all_Fearnhead,log_W_all_Fearnhead);
+    tau_collect_Fearnhead = [tau_collect_Fearnhead tau_Fearnhead];
+end
+
+
 tau_collect = [tau];
 like_ests = zeros(1,M);
 for m=1:M
@@ -77,10 +79,18 @@ for m=1:M
     like_ests(m) = like_est;
     tau_collect = [tau_collect,tau];
 end
+
+
 figure(2);
+subplot(2,1,1)
+histogram(tau_collect_Fearnhead(tau_collect_Fearnhead>0),0:T)
+title('Posterior distribution of changepoints for Fearnhead')
+
+subplot(2,1,2)
 [~,tau_length] = size(tau_collect);
 tau_burnin = tau_collect(floor(tau_length/2):tau_length);
-histogram(tau_burnin(tau_burnin>0),T)
+histogram(tau_burnin(tau_burnin>0),0:T)
+title('Posterior distribution of changepoints iterated cSMC')
 
 
 

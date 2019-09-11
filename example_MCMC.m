@@ -54,7 +54,7 @@ histogram(tau_collect(tau_collect>0),0:T)
 title('Posterior distribution of changepoints for Fearnhead')
 
 subplot(2,1,2)
-histogram(pGeo_collect)
+histogram(pGeo_collect(pGeo_collect~=0))
 title('Posterior distribution of p for Fearnhead')
 
 
