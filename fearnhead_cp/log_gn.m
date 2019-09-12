@@ -1,11 +1,11 @@
 % this captures the predictive likelihood conditional on those in the
 % current segment
-function [log_g_val] = log_gn(nm1,xnm1,params)
+function [log_g_val] = log_gn(n,xnm1,params)
 
 Yall = params.Y;
-ynm1 = Yall(nm1);
-Y_conditioning = Yall((xnm1+1):nm1);
-[~,log_py] = pred_like_est(ynm1,Y_conditioning,params);
+yn = Yall(n);
+Y_conditioning = Yall((xnm1+1):(n-1));
+[~,log_py] = pred_like_est(yn,Y_conditioning,params);
 
 log_g_val = log_py;
 

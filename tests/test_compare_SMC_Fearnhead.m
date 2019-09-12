@@ -58,7 +58,7 @@ end
 
 
 %% compare SMC and Fearnhead with N<T
-N = 50;
+N = 10;
 
 % run forward filtering
 [SS_all_Fearnhead,log_W_all_Fearnhead,~] = forwardFilteringFearnhead(params,T);

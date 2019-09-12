@@ -58,7 +58,7 @@ for i=1:card_SS
 end
 
 %Wbar_n_nm1 = gn(n-1,n-1,params)sum(summand_arr);
-log_Wbar_n_nm1 = log_gn(n-1,n-1,params)+ ...
+log_Wbar_n_nm1 = log_gn(n,n-1,params)+ ...
         log(sum(exp(summand_arr-max(summand_arr))))+max(summand_arr);
 
 % get values of other Wbars
@@ -66,7 +66,7 @@ log_Wbar_arr = zeros(1,card_SS);
 for i=1:card_SS
     xnm1 = SS_nm1(i);
     log_W_val = log_W_nm1(i);
-    log_Wbar_arr(i) = log_gn(n-1,xnm1,params) +...
+    log_Wbar_arr(i) = log_gn(n,xnm1,params) +...
         log_fn(xnm1,xnm1,params) + log_W_val - ...
         min(0,log_W_val + logCnm1);      
 end

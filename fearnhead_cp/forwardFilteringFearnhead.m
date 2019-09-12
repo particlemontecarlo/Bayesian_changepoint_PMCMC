@@ -1,15 +1,19 @@
 function [SS_all,log_W_all,log_W_bar_all] = forwardFilteringFearnhead(params,T)
 %%% performs forward filtering recursively. Should return the weights of
 %%% the filtering distribution and the support 
-SS_nm1 = [0];
-log_W_nm1 = log([1]);
+SS_0 = [0];
+log_W0 = log([1]);
+log_Wbar0 = log_gn(1,0,params);
 
 SS_all = zeros(T,T);
-SS_all(1,1) = SS_nm1;
+SS_all(1,1) = SS_0;
 log_W_all = -Inf*ones(T,T);
-log_W_all(1,1) = log_W_nm1;
+log_W_all(1,1) = log_W0;
 log_W_bar_all = -Inf*ones(T,T);
-log_W_bar_all(1,1) = log_W_nm1;
+log_W_bar_all(1,1) = log_Wbar0;
+
+SS_nm1 = SS_0;
+log_W_nm1 = log_W0;
 for n=2:T
     [SS_updated,log_Wbar_updated] = filteringRecursion(n,SS_nm1,log_W_nm1,params);
     log_W_nm1 = log_Wbar_updated - max(log_Wbar_updated)- ...
@@ -41,7 +45,7 @@ for i=1:card_SS
     summand_arr(i) = log_fn(n-1,xnm1,params) + log_W_val;
 end
 
-log_Wbar_n_nm1 = log_gn(n-1,n-1,params)+ ...
+log_Wbar_n_nm1 = log_gn(n,n-1,params)+ ...
         log(sum(exp(summand_arr-max(summand_arr))))+max(summand_arr);
 
 
@@ -50,7 +54,7 @@ log_Wbar_arr = zeros(1,card_SS);
 for i=1:card_SS
     xnm1 = SS_nm1(i);
     log_W_val = log_W_nm1(i);
-    log_Wbar_arr(i) = log_gn(n-1,xnm1,params) +...
+    log_Wbar_arr(i) = log_gn(n,xnm1,params) +...
         log_fn(xnm1,xnm1,params) + log_W_val;      
 end
 
