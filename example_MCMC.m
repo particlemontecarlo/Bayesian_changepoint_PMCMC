@@ -33,7 +33,7 @@ params.sigma2 = s2;
 
 
 %% compare SMC and Fearnhead with N<T
-M = 1e4;
+M = 1e3;
 tau_collect = [];
 pGeo_collect = zeros(1,M);
 a_prior = 1;
