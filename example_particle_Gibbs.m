@@ -4,7 +4,7 @@ addpath(genpath('csmc_cp'));
 addpath(genpath('smc_cp'));
 addpath(genpath('fearnhead_cp'));
 addpath(genpath('tests'));
-
+addpath(genpath('utils'));
 
 
 %% test CSMC
