@@ -6,13 +6,12 @@ if ~any(diff(CPall)==0) && CPall(end)~=0
     p = f(1:2:end-1);  % Start indices
     n_changepoints = f(2:2:end)-p;  % Consecutive ones? counts
 else
-    [n_changepoints] = get_num_cp(CPall);
+    n_changepoints = get_num_cp(CPall);
 end
 end
 
 function [segment_length] = get_num_cp(tau_collect)
   
-    tau_collect_start_indx = 1;
     segment_length = zeros(1,sum(tau_collect==0));
     
     zero_indices = find(tau_collect==0);
